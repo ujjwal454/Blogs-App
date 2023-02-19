@@ -19,3 +19,4 @@ export const ADD_DATA = "ADD_DATA";
 export const REMOVE_ERRO = "REMOVE_ERRO";
 
 export const REMOVE_SINGLE_DETAIL = "REMOVE_SINGLE_DETAIL";
+export const ADD_SINGLE_DATA = "ADD_SINGLE_DATA";

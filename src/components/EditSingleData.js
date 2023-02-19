@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addDataInitiate } from "../redux/actions/action";
+import { editSingleData } from "../redux/actions/action";
+import { useNavigate } from "react-router-dom";
 import {
   makeStyles,
   Button,
@@ -32,14 +33,18 @@ const useStyles = makeStyles((theme) => ({
     padding: 20,
   },
 }));
-const Create = () => {
+const EditSingleData = () => {
+  const data = useSelector((state) => state.data.editData);
+  console.log(data);
   const classes = useStyles();
-  const [Title, setTitle] = useState("");
-  const [Details, setDetails] = useState("");
-  const [Name, setName] = useState("");
+  const [Title, setTitle] = useState(data.title ? data.title : "");
+  const [Details, setDetails] = useState(data.detail ? data.detail : "");
+  const [Name, setName] = useState(data.name ? data.name : "");
   const [error, seterror] = useState(false);
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const id = data.id;
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Title === "" || Details === "" || Name === "") {
@@ -53,17 +58,20 @@ const Create = () => {
         createdAt: new Date(),
         email: user.email,
       };
-      dispatch(addDataInitiate(data));
-      setTitle("");
-      setDetails("");
-      setName("");
-      alert("data succesfully added to database");
+      dispatch(editSingleData(id, data, successEdit));
     }
+  };
+  const successEdit = () => {
+    setTitle("");
+    setDetails("");
+    setName("");
+    alert("data succesfully edited");
+    navigate("/personalBlogs");
   };
   return (
     <Container className={classes.container}>
       <Typography variant="h4" gutterBottom>
-        Create Blogs
+        Edit Blog
       </Typography>
       <form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <TextField
@@ -113,11 +121,11 @@ const Create = () => {
           color="secondary"
           size="large"
         >
-          Submit
+          Edit
         </Button>
       </form>
     </Container>
   );
 };
 
-export default Create;
+export default EditSingleData;
